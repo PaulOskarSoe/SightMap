@@ -7,6 +7,8 @@ const password = '3o72qMrQbD4g8tWs'; //Proccess.env later
 
 const index = require('./routes/index');
 const markers = require('./routes/markers');
+const users = require('./routes/users');
+
 
 const app = express();
 let PORT = 3000;
@@ -36,3 +38,4 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/", index);
 app.use('/api/v1', markers);
+app.use('/api/v1', users);

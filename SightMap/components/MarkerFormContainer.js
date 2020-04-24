@@ -13,13 +13,14 @@ const MarkerFormContainer = () => {
       setDescription('')
     }
 
-  }
+  };
+
 
   return (
     <View style={styles.container}>
       <TextInput placeholder="address" style={styles.input} onChangeText={text => setAddress(text)} value={address}></TextInput>
       <TextInput placeholder="description" style={styles.input} onChangeText={text => setDescription(text)} value={description}></TextInput>
-      <Button style={styles.button} title="Add a new spot" onPress={() => onSightSeeingAdded()}>
+      <Button style={styles.button} title={"Add a new spot"} onPress={() => onSightSeeingAdded()}>
       </Button>
     </View>
   )

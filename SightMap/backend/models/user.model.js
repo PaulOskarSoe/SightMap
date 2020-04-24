@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-// TODO - Add a picture later
+// TODO - Add a unique key
 const userSchema = new mongoose.Schema({
+    deviceId: {type: String, required: true},
     fullName: {type: String, required: true},
-    markerIDs: {type: [String], default: []}
+    markerIds: {type: [String], default: []}
 });
 
 const User = mongoose.model("user", userSchema);
