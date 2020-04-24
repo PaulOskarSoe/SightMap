@@ -1,7 +1,7 @@
 # SightMap
-# # Mobiilrakenduste teine kodutöö
+## Mobiilrakenduste teine kodutöö
 
-# # # Installation and running project
+### Installation and running project
 
 - Install expo cli to compile code 
 - - npm install expo-cli --global
