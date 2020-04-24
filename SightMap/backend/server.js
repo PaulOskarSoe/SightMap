@@ -24,7 +24,7 @@ mongoose.connect(DB_URL)
         listen();
     })
     .catch((err) => {
-        console.log("error: ", err);
+        console.log("Database access unsuccessful: ", err);
     });
 
 app.set('views', path.join(__dirname, 'views'));
