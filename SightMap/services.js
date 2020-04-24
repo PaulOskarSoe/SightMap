@@ -55,13 +55,14 @@ export const getMarker = ({markerId}) =>{
         });
 };
 
-export const addMarker = ({userId, latitude, longitude, description}) =>{
+// TODO - add google maps api and after success POST
+export const addMarker = ({userId, description, address}) =>{
     return fetch(`${basePath}/markers`, {
         method: "POST",
         headers:{
             "Content-type": "Application/json"
         },
-        body: JSON.stringify({userId, latitude, longitude, description})
+        body: JSON.stringify({userId, description})
     })
         .then(res => {
             if(!res.ok) throw "Add marker failed";
@@ -123,6 +124,26 @@ export const deleteUser = ({userId}) =>{
     })
         .then(res => {
             if(!res.ok) throw "delete user failed";
+            return true;
+        });
+};
+
+export const addMarkerToMarkerIds = ({userId, markerId}) =>{
+    return fetch(`${basePath}/users/${userId}/markers/${markerId}`, {
+        method: "PUT",
+    })
+        .then(res => {
+            if(!res.ok) throw "add marker to markers failed";
+            return true;
+        });
+};
+
+export const removeMarkerFromMarkerIds = ({userId, markerId}) =>{
+    return fetch(`${basePath}/users/${userId}/markers/${markerId}`, {
+        method: "DELETE",
+    })
+        .then(res => {
+            if(!res.ok) throw "delete marker to markers failed";
             return true;
         });
 };

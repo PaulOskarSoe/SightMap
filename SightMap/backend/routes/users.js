@@ -1,7 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
+const Marker = require('../models/marker.model');
 const mongoose = require("mongoose");
+
+router.param("userId", (req, res, next, userId) => {
+    User.findById(userId, (err, user) => {
+        if (err || !user) return res.status(500).send("user params error");
+        req.user = user;
+        next();
+    });
+});
+
+router.param("markerId", (req, res, next, markerId) => {
+    Marker.findById(markerId, (err, marker) => {
+        if (err || !marker) return res.status(500).send("marker params error");
+        req.marker = marker;
+        next();
+    });
+});
 
 // Get all users
 router.get('/users', (req, res) => {
@@ -18,7 +35,6 @@ router.get('/users/:userId', (req, res) => {
             handleError(err);
             return res.send(500);
         }
-        console.log(doc);
         res.send(doc);
     })
 });
@@ -33,6 +49,35 @@ router.post('/users', (req, res) =>{
         }
         res.send(200)
     })
+});
+
+//returns user object
+router.get("/:userId", (req, res) => {
+    res.send(req.user).push();
+});
+
+router.put('/users/:userId/markers/:markerId', (req, res) => {
+    req.user.markerIds.push(req.marker._id.toString());
+    req.user.save((err) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("error saving marker to markers");
+        }
+        res.send(200);
+    });
+});
+
+// remove marker from markerIds
+router.delete("/users/:userId/markers/:markerId", (req, res) => {
+    const index = req.user.markerIds.findIndex(markerId => markerId === req.marker._id.toString());
+    req.user.markerIds.splice(index, 1);
+    req.user.save((err) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("error deleting marker from markers");
+        }
+        res.send(200);
+    });
 });
 
 // delete a user
