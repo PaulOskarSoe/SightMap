@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, Button, StyleSheet } from 'react-native'
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native'
 
 const MarkerFormContainer = () => {
   
@@ -7,14 +7,19 @@ const MarkerFormContainer = () => {
   const [address, setAddress] = useState()
 
   const onSightSeeingAdded = () => {
-    console.log('Added')
+    if(description && address){
+      Alert.alert("Success", `Sightseeing spot has been added to: ${address}`)
+      setAddress('')
+      setDescription('')
+    }
+
   }
 
   return (
     <View style={styles.container}>
       <TextInput placeholder="address" style={styles.input} onChangeText={text => setAddress(text)} value={address}></TextInput>
       <TextInput placeholder="description" style={styles.input} onChangeText={text => setDescription(text)} value={description}></TextInput>
-      <Button style={styles.button} title="Add new sightseeing" onPress={() => onSightSeeingAdded()}>
+      <Button style={styles.button} title="Add a new spot" onPress={() => onSightSeeingAdded()}>
       </Button>
     </View>
   )
