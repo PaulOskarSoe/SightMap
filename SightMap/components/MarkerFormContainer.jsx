@@ -20,7 +20,7 @@ const MarkerFormContainer = () => {
   };
   return (
     <View style={styles.container}>
-      <TextInput placeholder="address" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
+      <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
       <TextInput placeholder="description" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} />
       <Button style={styles.button} title="Add the new spot" onPress={() => onSightSeeingAdded()} />
     </View>
