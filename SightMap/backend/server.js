@@ -15,7 +15,6 @@ const users = require('./routes/users');
 const app = express();
 const PORT = 3000;
 const DB_URL = `mongodb+srv://${username}:${password}@rakprog-aq8p2.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
-console.log(DB_URL)
 
 const listen = () => {
   app.listen(PORT, () => {

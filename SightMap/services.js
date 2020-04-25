@@ -37,7 +37,7 @@ export const getMarkerById = ({ markerId }) => fetch(`${basePath}/markers/${mark
 // TODO - add google maps api and after success POST
 // eslint-disable-next-line no-unused-vars
 export const addMarker = (userID, description, address) => {
-    fetch(`${basePath}/markers`, {
+  fetch(`${basePath}/markers`, {
     method: 'POST',
     headers: {
       'Content-type': 'Application/json',
@@ -50,9 +50,8 @@ export const addMarker = (userID, description, address) => {
     })
     .catch((err) => {
       console.log('adding marker error : ', err);
-    })
+    });
 };
-
 
 
 export const deleteMarker = ({ markerId }) => fetch(`${basePath}/markers/${markerId}`, {
