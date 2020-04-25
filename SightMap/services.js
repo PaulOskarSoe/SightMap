@@ -1,149 +1,117 @@
-import Constants from "expo-constants";
+/* eslint-disable no-const-assign */
+/* eslint-disable no-console */
+import Constants from 'expo-constants';
 // TODO - refactor in future
 const { manifest } = Constants;
 // We have to use dynamic Dev ip because localhost is not supported
 const uri = `http://${manifest.debuggerHost.split(':').shift()}:3000`;
 const basePath = `${uri}/api/v1`;
 
-// DEMO for how to user a service
-
-// GET
-/*
-*getMarker({markerId: '5ea2f2095969213f2095ed31'})
-        .then( docs => {
-          console.debug(docs);
-        })
-        .catch(err => {
-          console.debug(err);
-        })
-*/
-
-/*
-
-// POST
-*addMarker({userId: 'mingiID', latitude: 0, longitude: 0, description: 'mingi description'})
-.then( res => {
-    //do sth here with res
-})
-.catch(err => {
-    console.log(err);
-})
-*/
-
-
 /*
     MARKERS SERVICES
 */
 
-export const getMarkers = () =>{
-    return fetch(`${basePath}/markers`, {
-        method: "GET",
-    })
-        .then(res => {
-            if(!res.ok) throw "failed to get Markers";
-            return res.json();
-        });
-};
+export const getMarkers = () => fetch(`${basePath}/markers`, {
+  method: 'GET',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('getting all markerks failed');
+    return res.json();
+  }).catch((err) => {
+    console.log('getting markers error : ', err);
+  });
 
-export const getMarker = ({markerId}) =>{
-    return fetch(`${basePath}/markers/${markerId}`, {
-        method: "GET",
-    })
-        .then(res => {
-            if(!res.ok) throw "Get marker failed";
-            return res.json();
-        });
-};
+
+export const getMarkerById = ({ markerId }) => fetch(`${basePath}/markers/${markerId}`, {
+  method: 'GET',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('getting marker by id failed');
+    return res.json();
+  })
+  .catch((err) => {
+    console.log('getting marker by id error : ', err);
+  });
+
 
 // TODO - add google maps api and after success POST
-export const addMarker = ({userId, description, address}) =>{
-    return fetch(`${basePath}/markers`, {
-        method: "POST",
-        headers:{
-            "Content-type": "Application/json"
-        },
-        body: JSON.stringify({userId, description})
+// eslint-disable-next-line no-unused-vars
+export const addMarker = (userID, description, address) => {
+    fetch(`${basePath}/markers`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'Application/json',
+    },
+    body: JSON.stringify({ userID, description, address }),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error('Add marker failed');
+      return true;
     })
-        .then(res => {
-            if(!res.ok) throw "Add marker failed";
-            return true;
-        })
+    .catch((err) => {
+      console.log('adding marker error : ', err);
+    })
 };
 
-export const deleteMarker = ({markerId}) =>{
-    return fetch(`${basePath}/markers/${markerId}`, {
-        method: "DELETE",
-    })
-        .then(res => {
-            if(!res.ok) throw "delete marker failed";
-            return true;
-        });
-};
+
+
+export const deleteMarker = ({ markerId }) => fetch(`${basePath}/markers/${markerId}`, {
+  method: 'DELETE',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('deleting marker by id failed');
+    return true;
+  });
+
 
 /*
     USER SERVICES
 */
 
-export const getUsers = () =>{
-    return fetch(`${basePath}/users`, {
-        method: "GET",
-    })
-        .then(res => {
-            if(!res.ok) throw "failed to get users";
-            return res.json();
-        });
-};
+export const getUsers = () => fetch(`${basePath}/users`, {
+  method: 'GET',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('failed to get users');
+    return res.json();
+  })
+  .catch((err) => {
+    console.log('getting all users error : ', err);
+  });
 
-export const getUser = ({userId}) =>{
-    return fetch(`${basePath}/users/${userId}`, {
-        method: "GET",
-    })
-        .then(res => {
-            if(!res.ok) throw "Get user failed";
-            return res.json();
-        });
-};
+export const getUserById = ({ userId }) => fetch(`${basePath}/users/${userId}`, {
+  method: 'GET',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('failed to get user by id');
+    return res.json();
+  })
+  .catch((err) => {
+    console.log('getting user by id error : ', err);
+  });
 
-export const addUser = ({deviceId, fullName, markerIds}) =>{
-    return fetch(`${basePath}/users`, {
-        method: "POST",
-        headers:{
-            "Content-type": "Application/json"
-        },
-        body: JSON.stringify({deviceId, fullName, markerIds})
-    })
-        .then(res => {
-            if(!res.ok) throw "Add user failed";
-            return true;
-        })
-};
+export const addUser = ({ deviceId, fullName, markerIds }) => fetch(`${basePath}/users`, {
+  method: 'POST',
+  headers: {
+    'Content-type': 'Application/json',
+  },
+  body: JSON.stringify({ deviceId, fullName, markerIds }),
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('failed to add user');
+    return res.json();
+  })
+  .catch((err) => {
+    console.log('adding user error : ', err);
+  });
 
-export const deleteUser = ({userId}) =>{
-    return fetch(`${basePath}/users/${userId}`, {
-        method: "DELETE",
-    })
-        .then(res => {
-            if(!res.ok) throw "delete user failed";
-            return true;
-        });
-};
-
-export const addMarkerToMarkerIds = ({userId, markerId}) =>{
-    return fetch(`${basePath}/users/${userId}/markers/${markerId}`, {
-        method: "PUT",
-    })
-        .then(res => {
-            if(!res.ok) throw "add marker to markers failed";
-            return true;
-        });
-};
-
-export const removeMarkerFromMarkerIds = ({userId, markerId}) =>{
-    return fetch(`${basePath}/users/${userId}/markers/${markerId}`, {
-        method: "DELETE",
-    })
-        .then(res => {
-            if(!res.ok) throw "delete marker to markers failed";
-            return true;
-        });
-};
+export const deleteUser = ({ userId }) => fetch(`${basePath}/users/${userId}`, {
+  method: 'DELETE',
+})
+  .then((res) => {
+    if (!res.ok) throw new Error('failed to delete user by id');
+    return res.json();
+  })
+  .catch((err) => {
+    console.log('deleting user error : ', err);
+  });

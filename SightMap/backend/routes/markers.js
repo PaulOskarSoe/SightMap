@@ -1,56 +1,74 @@
 const express = require('express');
+
 const router = express.Router();
 const Marker = require('../models/marker.model');
-const mongoose = require("mongoose");
+const geoLocationKey = process.env.API_KEY;
+const fetch = require("node-fetch");
 
 
 // Get all markers
-router.get('/markers', (req, res) => {
-    Marker.find({}, function (err, docs) {
-        if(err) return handleError(err);
-        res.send(docs);
-    })
+router.get('/', async (req, res) => {
+  try {
+    const markers = await Marker.find({});
+    res.json({ markers });
+    res.status(200);
+  } catch (error) {
+    res.send(error);
+    res.status(500);
+  }
 });
 
 // Get a specific marker
-router.get('/markers/:markerId', (req, res) => {
-    Marker.findById(req.params.markerId, function (err, doc) {
-        if(err){
-            handleError(err);
-            return res.send(500);
-        }
-        console.log(doc);
-        res.send(doc);
-    })
+router.get('/:markerId', async (req, res) => {
+  const markerID = req.params.markerId;
+  try {
+    const marker = await Marker.findById(markerID);
+    res.json({ marker });
+    res.send(200);
+  } catch (error) {
+    res.send(error);
+    res.send(500);
+  }
 });
 
 // insert a new marker
-router.post('/markers', (req, res) =>{
-    const marker = new Marker(req.body);
-    marker.save( err => {
-        if(err){
-            handleError(err);
-            return res.send(500);
-        }
-        res.send(200)
-    })
+router.post('/', async (req, res) => {
+  const userId = req.body.userID;
+  const description = req.body.description;
+  const address = req.body.address;
+  let geoLocation = null
+  await fetch(`https://us1.locationiq.com/v1/search.php?key=${geoLocationKey}&q=${address}&format=json`)
+    .then(res => res.json())
+    .then(data => geoLocation = data[0])
+    .catch((err) => console.log(err));
+  const latitude = geoLocation["boundingbox"][0];
+  const longitude = geoLocation["boundingbox"][3];
+  
+  const marker = new Marker({userId, address ,latitude, longitude, description})
+  try {
+    const response = await marker.save();
+    res.json({ response });
+    res.status(200);
+  } catch (error) {
+    res.status(500)
+    res.send({error})
+  }
+  console.log('marker', marker);
+
+
 });
 
 // delete a marker
-router.delete("/markers/:markerId", (req, res) => {
-    Marker.deleteOne({"_id": mongoose.Types.ObjectId(req.params.markerId)}, (err) => {
-        if (err) {
-            handleError(err);
-            return res.send(500);
-        }
-        res.send(204);
-    });
+router.delete('/:markerId', async (req, res) => {
+  const markerID = req.params.markerId;
+  try {
+    const response = await Marker.deleteOne({ _id: markerID });
+    res.json({ response });
+    res.send(204);
+  } catch (error) {
+    res.send(error);
+    res.status(500);
+  }
 });
 
-// TODO - make it more advanced
-handleError = (err) =>{
-  console.log(err)
-};
-
-
-module.exports=router;
+module.exports = router;
