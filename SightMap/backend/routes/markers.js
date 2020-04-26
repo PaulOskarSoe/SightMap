@@ -59,6 +59,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// TODO - needs user authentication
 // delete a marker
 router.delete('/:markerId', async (req, res) => {
   const markerID = req.params.markerId;

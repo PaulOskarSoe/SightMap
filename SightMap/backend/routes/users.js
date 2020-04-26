@@ -41,18 +41,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-// remove marker from markerIds
-// router.delete('/:userId/markers/:markerId', (req, res) => {
-// });
-
-// delete a user
-// router.delete('/:userId', (req, res) => {
-//   User.deleteOne({ _id: mongoose.Types.ObjectId(req.params.userId) }, (err) => {
-//     if (err) {
-//       return res.send(500);
-//     }
-//     res.sendStatus(204);
-//   });
-// });
-
 module.exports = router;
