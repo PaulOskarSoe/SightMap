@@ -34,7 +34,6 @@ export const getMarkerById = ({ markerId }) => fetch(`${basePath}/markers/${mark
   });
 
 
-// TODO - add google maps api and after success POST
 // eslint-disable-next-line no-unused-vars
 export const addMarker = (userID, description, address) => {
   fetch(`${basePath}/markers`, {
@@ -78,7 +77,7 @@ export const getUsers = () => fetch(`${basePath}/users`, {
     console.log('getting all users error : ', err);
   });
 
-export const getUserById = ({ userId }) => fetch(`${basePath}/users/${userId}`, {
+export const getUserById = (userId) => fetch(`${basePath}/users/${userId}`, {
   method: 'GET',
 })
   .then((res) => {
@@ -89,12 +88,12 @@ export const getUserById = ({ userId }) => fetch(`${basePath}/users/${userId}`, 
     console.log('getting user by id error : ', err);
   });
 
-export const addUser = ({ deviceId, fullName, markerIds }) => fetch(`${basePath}/users`, {
+export const addUser = ({ deviceId, fullName }) => fetch(`${basePath}/users`, {
   method: 'POST',
   headers: {
     'Content-type': 'Application/json',
   },
-  body: JSON.stringify({ deviceId, fullName, markerIds }),
+  body: JSON.stringify({ deviceId, fullName }),
 })
   .then((res) => {
     if (!res.ok) throw new Error('failed to add user');
