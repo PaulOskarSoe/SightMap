@@ -30,10 +30,10 @@ const App = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getUserFromStorage();
   }, []);
+
 
   return (
     <UserContext.Provider value={user}>

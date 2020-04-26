@@ -34,7 +34,9 @@ const UserFormContainer = ({ navigation }) => {
   // If user exists go to app and reset navigation
   const checkUser = async () => {
     const user = await AsyncStorage.getItem('user');
-    if (user) navigation.reset({ index: 0, routes: [{ name: 'TabNavigator' }] });
+    if (user) {
+      navigation.navigate('TabNavigator');
+    }
   };
   useEffect(() => {
     checkUser();

@@ -36,9 +36,6 @@ export const getMarkerById = (markerId) => fetch(`${basePath}/markers/${markerId
 
 // eslint-disable-next-line no-unused-vars
 export const addMarker = (userID, description, address) => {
-  console.log(userID);
-  console.log(description);
-  console.log(address);
   fetch(`${basePath}/markers`, {
     method: 'POST',
     headers: {

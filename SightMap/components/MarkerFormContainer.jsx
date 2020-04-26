@@ -17,9 +17,6 @@ const MarkerFormContainer = () => {
       Alert.alert('Success', `Sightseeing spot has been added to: ${address}`);
       setAddress('');
       setDescription('');
-      console.log('bef ser', user);
-      console.log('bef ser', description);
-      console.log('bef ser', address);
       addMarker(user._id, description, address);
     }
   };
