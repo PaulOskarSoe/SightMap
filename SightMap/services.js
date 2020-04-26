@@ -22,7 +22,7 @@ export const getMarkers = () => fetch(`${basePath}/markers`, {
   });
 
 
-export const getMarkerById = ({ markerId }) => fetch(`${basePath}/markers/${markerId}`, {
+export const getMarkerById = (markerId) => fetch(`${basePath}/markers/${markerId}`, {
   method: 'GET',
 })
   .then((res) => {
@@ -53,7 +53,7 @@ export const addMarker = (userID, description, address) => {
 };
 
 
-export const deleteMarker = ({ markerId }) => fetch(`${basePath}/markers/${markerId}`, {
+export const deleteMarker = (markerId) => fetch(`${basePath}/markers/${markerId}`, {
   method: 'DELETE',
 })
   .then((res) => {
@@ -88,7 +88,7 @@ export const getUserById = (userId) => fetch(`${basePath}/users/${userId}`, {
     console.log('getting user by id error : ', err);
   });
 
-export const addUser = ({ deviceId, fullName }) => fetch(`${basePath}/users`, {
+export const addUser = (deviceId, fullName) => fetch(`${basePath}/users`, {
   method: 'POST',
   headers: {
     'Content-type': 'Application/json',
@@ -103,7 +103,7 @@ export const addUser = ({ deviceId, fullName }) => fetch(`${basePath}/users`, {
     console.log('adding user error : ', err);
   });
 
-export const deleteUser = ({ userId }) => fetch(`${basePath}/users/${userId}`, {
+export const deleteUser = (userId) => fetch(`${basePath}/users/${userId}`, {
   method: 'DELETE',
 })
   .then((res) => {
