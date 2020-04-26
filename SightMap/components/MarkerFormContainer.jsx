@@ -22,16 +22,11 @@ const MarkerFormContainer = () => {
     }
   };
 
-  const log = async () => {
-    const user = await AsyncStorage.removeItem('user');
-    console.debug(user);
-  }
-
   return (
     <View style={styles.container}>
       <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
       <TextInput placeholder="description" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} />
-      <Button style={styles.button} title="Add the new spot" onPress={() => log()} />
+      <Button style={styles.button} title="Add the new spot" onPress={() => onSightSeeingAdded()} />
     </View>
   );
 };

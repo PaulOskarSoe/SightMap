@@ -53,8 +53,9 @@ export const addMarker = (userID, description, address) => {
 };
 
 
-export const deleteMarker = (markerId) => fetch(`${basePath}/markers/${markerId}`, {
+export const deleteMarker = (markerId, userId) => fetch(`${basePath}/markers/${markerId}`, {
   method: 'DELETE',
+  body: JSON.stringify({ userId}),
 })
   .then((res) => {
     if (!res.ok) throw new Error('deleting marker by id failed');

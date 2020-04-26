@@ -59,16 +59,30 @@ router.post('/', async (req, res) => {
   }
 });
 
-// TODO - needs user authentication
+const userAuth = async (userId, markerId) => {
+  try{
+    const marker = await Marker.findOne({ _id: markerId });
+    return marker.userId === userId;
+  }
+  catch (err){
+    console.log(err);
+    return false;
+  }
+};
+
 // delete a marker
 router.delete('/:markerId', async (req, res) => {
   const markerID = req.params.markerId;
-  try {
+  const userId = req.body.userId;
+  const authorized = await userAuth(userId, markerID);
+  if(!authorized) return res.send("Unauthorized") && res.status(403);
+  try{
     const response = await Marker.deleteOne({ _id: markerID });
     res.json({ response });
-    res.send(204);
-  } catch (error) {
-    res.send(error);
+    res.status(204);
+  }
+  catch (err) {
+    res.send(err);
     res.status(500);
   }
 });

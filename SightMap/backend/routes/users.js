@@ -28,8 +28,8 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-const doesUserExist = ({user}) => new Promise(async (resolve, reject) => {
-  await User.find({fullName : user.fullName, deviceId: user.deviceId}, (err, doc) => {
+const doesUserExist = (user) => new Promise( (resolve, reject) => {
+  User.find({fullName : user.fullName, deviceId: user.deviceId}, (err, doc) => {
     if(err) return reject(err);
     if(doc.length) return reject("User Already Exists");
     return resolve(user);
@@ -40,7 +40,7 @@ const doesUserExist = ({user}) => new Promise(async (resolve, reject) => {
 // insert a new user
 router.post('/', (req, res) => {
   const user = req.body && new User(req.body);
-  doesUserExist({user})
+  doesUserExist(user)
   .then( async (user) => {
     const newUser = await user.save();
     res.json(newUser);

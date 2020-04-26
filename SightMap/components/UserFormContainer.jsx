@@ -34,7 +34,7 @@ const UserFormContainer = ({navigation}) => {
     };
     useEffect( () => {
         checkUser();
-    });
+    }, []);
 
     return(
         <View style={styles.container}>
