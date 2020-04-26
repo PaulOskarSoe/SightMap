@@ -1,23 +1,27 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-use-before-define */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View, TextInput, Button, StyleSheet, Alert,
 } from 'react-native';
 import { addMarker } from '../services';
+import UserContext from '../UserContext';
 
 const MarkerFormContainer = () => {
+  const user = useContext(UserContext);
+
   const [description, setDescription] = useState();
   const [address, setAddress] = useState();
-
 
   const onSightSeeingAdded = () => {
     if (description && address) {
       Alert.alert('Success', `Sightseeing spot has been added to: ${address}`);
       setAddress('');
       setDescription('');
-      addMarker('5ea2f62faa15094dd49b68a7', description, address);
+      addMarker(user._id, description, address);
     }
   };
+
   return (
     <View style={styles.container}>
       <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
