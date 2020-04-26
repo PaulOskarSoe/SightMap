@@ -89,12 +89,12 @@ export const getUserById = ({ userId }) => fetch(`${basePath}/users/${userId}`, 
     console.log('getting user by id error : ', err);
   });
 
-export const addUser = ({ deviceId, fullName, markerIds }) => fetch(`${basePath}/users`, {
+export const addUser = ({ deviceId, fullName}) => fetch(`${basePath}/users`, {
   method: 'POST',
   headers: {
     'Content-type': 'Application/json',
   },
-  body: JSON.stringify({ deviceId, fullName, markerIds }),
+  body: JSON.stringify({ deviceId, fullName}),
 })
   .then((res) => {
     if (!res.ok) throw new Error('failed to add user');

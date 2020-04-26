@@ -5,16 +5,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const username = 'sanderzhanni';
-const password = '3o72qMrQbD4g8tWs'; // Proccess.env later
+const USERNAME = 'sanderzhanni';
+const PASSWORD = '3o72qMrQbD4g8tWs';
 
 const markers = require('./routes/markers');
 const users = require('./routes/users');
 
-
 const app = express();
 const PORT = 3000;
-const DB_URL = `mongodb+srv://${username}:${password}@rakprog-aq8p2.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const DB_URL = `mongodb+srv://${USERNAME}:${PASSWORD}@rakprog-aq8p2.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 const listen = () => {
   app.listen(PORT, () => {

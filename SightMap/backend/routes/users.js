@@ -28,17 +28,28 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+const doesUserExist = ({user}) => new Promise(async (resolve, reject) => {
+  await User.find({fullName : user.fullName, deviceId: user.deviceId}, (err, doc) => {
+    if(err) return reject(err);
+    if(doc.length) return reject("User Already Exists");
+    return resolve(user);
+  });
+});
+
+
 // insert a new user
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   const user = req.body && new User(req.body);
-  try {
+  doesUserExist({user})
+  .then( async (user) => {
     const newUser = await user.save();
     res.json(newUser);
     res.status(200);
-  } catch (error) {
+  })
+  .catch(err => {
     res.status(500);
-    res.send(error);
-  }
+    res.send(err);
+  });
 });
 
 module.exports = router;
