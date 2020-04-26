@@ -25,10 +25,10 @@ router.get('/:markerId', async (req, res) => {
   try {
     const marker = await Marker.findById(markerID);
     res.json({ marker });
-    res.send(200);
+    res.status(200);
   } catch (error) {
     res.send(error);
-    res.send(500);
+    res.status(500);
   }
 });
 
@@ -74,9 +74,9 @@ const userAuth = async (userId, markerId) => {
 router.delete('/:markerId', async (req, res) => {
   const markerID = req.params.markerId;
   const userId = req.body.userId;
-  const authorized = await userAuth(userId, markerID);
-  if(!authorized) return res.send("Unauthorized") && res.status(403);
   try{
+    const authorized = await userAuth(userId, markerID);
+    if(!authorized) return res.send("Unauthorized") && res.status(403);
     const response = await Marker.deleteOne({ _id: markerID });
     res.json({ response });
     res.status(204);
