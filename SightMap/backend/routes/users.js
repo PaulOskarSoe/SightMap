@@ -28,10 +28,11 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-const doesUserExist = (user) => new Promise( (resolve, reject) => {
-  User.find({fullName : user.fullName, deviceId: user.deviceId}, (err, doc) => {
-    if(err) return reject(err);
-    if(doc.length) return reject("User Already Exists");
+const doesUserExist = (user) => new Promise((resolve, reject) => {
+  User.find({ fullName: user.fullName, deviceId: user.deviceId }, (err, doc) => {
+    if (err) return reject(err);
+    // eslint-disable-next-line prefer-promise-reject-errors
+    if (doc.length) return reject('User Already Exists');
     return resolve(user);
   });
 });
@@ -41,15 +42,16 @@ const doesUserExist = (user) => new Promise( (resolve, reject) => {
 router.post('/', (req, res) => {
   const user = req.body && new User(req.body);
   doesUserExist(user)
-  .then( async (user) => {
-    const newUser = await user.save();
-    res.json(newUser);
-    res.status(200);
-  })
-  .catch(err => {
-    res.status(500);
-    res.send(err);
-  });
+    // eslint-disable-next-line no-shadow
+    .then(async (user) => {
+      const newUser = await user.save();
+      res.json(newUser);
+      res.status(200);
+    })
+    .catch((err) => {
+      res.status(500);
+      res.send(err);
+    });
 });
 
 module.exports = router;
