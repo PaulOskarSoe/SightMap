@@ -28,7 +28,7 @@ const App = () => {
   //   }
   // };
 
-  // TODO - replace this with getUserFromAsyncStorage
+  // TODO - replace this with getUserFromAsyncStorage, atm just random user
   const getUserFromBackend = async () => {
     const userData = await getUserById('5ea58198fd0b655a951bb461');
     setUser(userData);
