@@ -4,7 +4,6 @@
 
 import React, { useState, useEffect } from 'react';
 import 'react-native-gesture-handler';
-// import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,37 +12,32 @@ import MapContainer from './components/MapContainer';
 import MarkerFormContainer from './components/MarkerFormContainer';
 import UserFormContainer from "./components/UserFormContainer";
 import UserContext from "./UserContext";
-import { getUserById } from './services';
+import {AsyncStorage} from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const App = () => {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
 
-    // havent tested this!
-    // const getUserFromAsyncStorage = async () => {
-    //   try {
-    //     const userData = await AsyncStorage.getItem('user');
-    //     if (userData) setUser(userData);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // TODO - replace this with getUserFromAsyncStorage, atm just random user
-    const getUserFromBackend = async () => {
-        const userData = await getUserById('5ea58198fd0b655a951bb461');
-        setUser(userData);
+    const getUserFromStorage = async () => {
+        try{
+            const user = await AsyncStorage.getItem('user');
+            setUser(user);
+        }
+        catch (error) {
+           console.log(error);
+        }
     };
+
     useEffect(() => {
-        getUserFromBackend();
+        getUserFromStorage();
     }, []);
 
     return (
     <UserContext.Provider value={user}>
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName="UserForm">
                 <Stack.Screen name="UserForm" component={UserFormContainer} />
                 <Stack.Screen name="TabNavigator" component={TabNavigator} />
             </Stack.Navigator>

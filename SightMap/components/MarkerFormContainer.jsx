@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext } from 'react';
 import {
-  View, TextInput, Button, StyleSheet, Alert,
+  View, TextInput, Button, StyleSheet, Alert, AsyncStorage,
 } from 'react-native';
 import { addMarker } from '../services';
 import UserContext from '../UserContext';
@@ -22,11 +22,16 @@ const MarkerFormContainer = () => {
     }
   };
 
+  const log = async () => {
+    const user = await AsyncStorage.removeItem('user');
+    console.debug(user);
+  }
+
   return (
     <View style={styles.container}>
       <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
       <TextInput placeholder="description" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} />
-      <Button style={styles.button} title="Add the new spot" onPress={() => onSightSeeingAdded()} />
+      <Button style={styles.button} title="Add the new spot" onPress={() => log()} />
     </View>
   );
 };

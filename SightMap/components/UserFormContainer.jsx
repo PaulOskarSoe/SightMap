@@ -1,18 +1,45 @@
-import React, { useState } from 'react';
-import {View, Text, TextInput, StyleSheet, Button} from "react-native";
+import React, { useState, useEffect } from 'react';
+import {View, Text, TextInput, StyleSheet, Button, AsyncStorage} from "react-native";
 import Constants from 'expo-constants';
+import {addUser} from "../services";
 
 const { deviceId } = Constants;
 
-const UserFormContainer = () => {
+const UserFormContainer = ({navigation}) => {
+    const [fullName, setFullName] = useState(null);
+
+    const setName = (text) => {
+        setFullName(text);
+    };
 
     const handleSubmit = () => {
-      console.debug(deviceId);
+        addUser({fullName: fullName, deviceId: deviceId})
+            .then(doc => storeUser(doc))
+            .catch(err => console.log(err));
     };
+
+    const storeUser = async (user) => {
+        try {
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+            checkUser();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    //If user exists go to app and reset navigation
+    const checkUser = async () => {
+        const user = await AsyncStorage.getItem('user');
+        if(user) navigation.reset({index: 0, routes: [{ name: 'TabNavigator' }]});
+    };
+    useEffect( () => {
+        checkUser();
+    });
+
     return(
         <View style={styles.container}>
             <Text h1 style={styles.title}>Login form</Text>
-            <TextInput style={styles.input} placeholder=" Full name"/>
+            <TextInput style={styles.input} placeholder=" Full name" onChangeText={(text) => setName(text)}/>
             <Button style={styles.button} title="Enter" onPress={() => handleSubmit()}/>
         </View>
     )
