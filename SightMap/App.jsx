@@ -34,7 +34,6 @@ const App = () => {
     getUserFromStorage();
   }, []);
 
-
   return (
     <UserContext.Provider value={user}>
       <NavigationContainer>

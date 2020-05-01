@@ -28,30 +28,23 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-const doesUserExist = (user) => new Promise((resolve, reject) => {
-  User.find({ fullName: user.fullName, deviceId: user.deviceId }, (err, doc) => {
-    if (err) return reject(err);
-    // eslint-disable-next-line prefer-promise-reject-errors
-    if (doc.length) return reject('User Already Exists');
-    return resolve(user);
-  });
-});
-
-
 // insert a new user
-router.post('/', (req, res) => {
-  const user = req.body && new User(req.body);
-  doesUserExist(user)
-    // eslint-disable-next-line no-shadow
-    .then(async (user) => {
-      const newUser = await user.save();
-      res.json(newUser);
-      res.status(200);
-    })
-    .catch((err) => {
-      res.status(500);
-      res.send(err);
-    });
+router.post('/', async (req, res) => {
+  const { fullName, deviceId } = req.body;
+  const findUser = await User.find({ fullName, deviceId }).count() > 0;
+  const user = await User.find({ fullName, deviceId });
+
+  try {
+    if (findUser) {
+      res.json(user);
+    }
+    const userProps = new User(req.body);
+    const newUser = await userProps.save();
+    res.json(newUser);
+  } catch (error) {
+    res.status(500);
+    res.send(error);
+  }
 });
 
 module.exports = router;
