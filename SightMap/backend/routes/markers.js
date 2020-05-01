@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const fetch = require('node-fetch');
 const express = require('express');
 
@@ -25,18 +26,19 @@ router.get('/:markerId', async (req, res) => {
   try {
     const marker = await Marker.findById(markerID);
     res.json({ marker });
-    res.send(200);
+    res.status(200);
   } catch (error) {
     res.send(error);
-    res.send(500);
+    res.status(500);
   }
 });
 
 // insert a new marker
 router.post('/', async (req, res) => {
   const userId = req.body.userID;
-  const { description } = req.body;
-  const { address } = req.body;
+  const { description, address } = req.body;
+  console.log(userId);
+  console.log(description, address);
   let geoLocation = null;
   await fetch(`https://us1.locationiq.com/v1/search.php?key=${geoLocationKey}&q=${address}&format=json`)
     .then((resp) => resp.json())
@@ -59,16 +61,28 @@ router.post('/', async (req, res) => {
   }
 });
 
-// TODO - needs user authentication
+const userAuth = async (userId, markerId) => {
+  try {
+    const marker = await Marker.findOne({ _id: markerId });
+    return marker.userId === userId;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
 // delete a marker
 router.delete('/:markerId', async (req, res) => {
   const markerID = req.params.markerId;
+  const { userId } = req.body;
   try {
+    const authorized = await userAuth(userId, markerID);
+    if (!authorized) return res.send('Unauthorized') && res.status(403);
     const response = await Marker.deleteOne({ _id: markerID });
     res.json({ response });
-    res.send(204);
-  } catch (error) {
-    res.send(error);
+    res.status(204);
+  } catch (err) {
+    res.send(err);
     res.status(500);
   }
 });

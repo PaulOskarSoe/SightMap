@@ -45,7 +45,7 @@ export const addMarker = (userID, description, address) => {
   })
     .then((res) => {
       if (!res.ok) throw new Error('Add marker failed');
-      return true;
+      return res.json();
     })
     .catch((err) => {
       console.log('adding marker error : ', err);
@@ -53,8 +53,9 @@ export const addMarker = (userID, description, address) => {
 };
 
 
-export const deleteMarker = (markerId) => fetch(`${basePath}/markers/${markerId}`, {
+export const deleteMarker = (markerId, userId) => fetch(`${basePath}/markers/${markerId}`, {
   method: 'DELETE',
+  body: JSON.stringify({ userId }),
 })
   .then((res) => {
     if (!res.ok) throw new Error('deleting marker by id failed');
@@ -88,7 +89,8 @@ export const getUserById = (userId) => fetch(`${basePath}/users/${userId}`, {
     console.log('getting user by id error : ', err);
   });
 
-export const addUser = (deviceId, fullName) => fetch(`${basePath}/users`, {
+
+export const addUser = ({ deviceId, fullName }) => fetch(`${basePath}/users`, {
   method: 'POST',
   headers: {
     'Content-type': 'Application/json',

@@ -8,13 +8,12 @@ import { addMarker } from '../services';
 import UserContext from '../UserContext';
 
 const MarkerFormContainer = () => {
-  const user = useContext(UserContext);
-
+  const user = JSON.parse(useContext(UserContext));
   const [description, setDescription] = useState();
   const [address, setAddress] = useState();
 
   const onSightSeeingAdded = () => {
-    if (description && address) {
+    if (user && user._id && address) {
       Alert.alert('Success', `Sightseeing spot has been added to: ${address}`);
       setAddress('');
       setDescription('');

@@ -30,11 +30,17 @@ router.get('/:userId', async (req, res) => {
 
 // insert a new user
 router.post('/', async (req, res) => {
-  const user = req.body && new User(req.body);
+  const { fullName, deviceId } = req.body;
+  const findUser = await User.find({ fullName, deviceId }).count() > 0;
+  const user = await User.find({ fullName, deviceId });
+
   try {
-    const newUser = await user.save();
+    if (findUser) {
+      res.json(user);
+    }
+    const userProps = new User(req.body);
+    const newUser = await userProps.save();
     res.json(newUser);
-    res.status(200);
   } catch (error) {
     res.status(500);
     res.send(error);
