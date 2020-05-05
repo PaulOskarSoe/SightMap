@@ -25,7 +25,8 @@ const App = () => {
   const getUserFromStorage = async () => {
     try {
       const user = await AsyncStorage.getItem('user');
-      setUser(user);
+      const userObj = JSON.parse(user);
+      setUser(userObj);
     } catch (error) {
       console.log(error);
     }

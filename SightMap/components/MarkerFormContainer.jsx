@@ -2,19 +2,18 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext } from 'react';
 import {
-  View, TextInput, Button, StyleSheet, Alert,
+  View, TextInput, Button, StyleSheet,
 } from 'react-native';
 import { addMarker } from '../services';
 import UserContext from '../UserContext';
 
 const MarkerFormContainer = () => {
-  const user = JSON.parse(useContext(UserContext));
+  const user = useContext(UserContext);
   const [description, setDescription] = useState();
   const [address, setAddress] = useState();
 
   const onSightSeeingAdded = () => {
     if (user && user._id && address) {
-      Alert.alert('Success', `Sightseeing spot has been added to: ${address}`);
       setAddress('');
       setDescription('');
       addMarker(user._id, description, address);
@@ -24,7 +23,7 @@ const MarkerFormContainer = () => {
   return (
     <View style={styles.container}>
       <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
-      <TextInput placeholder="description" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} />
+      <TextInput placeholder="description (max 128 characters)" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} maxLength={128} />
       <Button style={styles.button} title="Add the new spot" onPress={() => onSightSeeingAdded()} />
     </View>
   );
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     margin: 10,
+    paddingLeft: 10,
   },
 });
 

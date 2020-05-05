@@ -37,27 +37,26 @@ router.get('/:markerId', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.body.userID;
   const { description, address } = req.body;
-  console.log(userId);
-  console.log(description, address);
   let geoLocation = null;
   await fetch(`https://us1.locationiq.com/v1/search.php?key=${geoLocationKey}&q=${address}&format=json`)
     .then((resp) => resp.json())
     // eslint-disable-next-line prefer-destructuring
     .then((data) => { geoLocation = data[0]; })
     .catch((err) => console.log(err));
-  const latitude = geoLocation.boundingbox[0];
-  const longitude = geoLocation.boundingbox[3];
-
-  const marker = new Marker({
-    userId, address, latitude, longitude, description,
-  });
   try {
+    const latitude = geoLocation.boundingbox[0];
+    const longitude = geoLocation.boundingbox[3];
+    const marker = new Marker({
+      userId, address, latitude, longitude, description,
+    });
+    console.debug(marker);
     const response = await marker.save();
     res.json({ response });
     res.status(200);
   } catch (error) {
     res.status(500);
     res.send({ error });
+    console.debug(error);
   }
 });
 
