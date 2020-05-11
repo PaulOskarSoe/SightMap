@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#fff',
-    fontFamily: 'sans-serif-medium',
   },
   text: {
     color: '#000',
