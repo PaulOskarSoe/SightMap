@@ -1,6 +1,7 @@
 /* eslint-disable no-const-assign */
 /* eslint-disable no-console */
 import Constants from 'expo-constants';
+import { Alert } from 'react-native';
 // TODO - refactor in future
 const { manifest } = Constants;
 // We have to use dynamic Dev ip because localhost is not supported
@@ -45,21 +46,31 @@ export const addMarker = (userID, description, address) => {
   })
     .then((res) => {
       if (!res.ok) throw new Error('Add marker failed');
+      Alert.alert('Success', `Successfully added a new marker at ${address}`);
       return res.json();
     })
     .catch((err) => {
       console.log('adding marker error : ', err);
+      Alert.alert('Failure', 'Could not find the address');
     });
 };
 
 
 export const deleteMarker = (markerId, userId) => fetch(`${basePath}/markers/${markerId}`, {
   method: 'DELETE',
+  headers: {
+    'Content-type': 'Application/json',
+  },
   body: JSON.stringify({ userId }),
 })
   .then((res) => {
     if (!res.ok) throw new Error('deleting marker by id failed');
+    Alert.alert('Success', 'Successfully deleted the marker');
     return true;
+  })
+  .catch((err) => {
+    console.debug(err);
+    Alert.alert('Failure', 'Could not delete the marker');
   });
 
 
