@@ -2,10 +2,11 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext } from 'react';
 import {
-  View, TextInput, Button, StyleSheet,
+  View, TextInput, StyleSheet,
 } from 'react-native';
 import { addMarker } from '../services';
 import UserContext from '../UserContext';
+import { Card, Input, Text, Icon, Button } from 'react-native-elements';
 
 const MarkerFormContainer = () => {
   const user = useContext(UserContext);
@@ -21,11 +22,26 @@ const MarkerFormContainer = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput placeholder="ex. Address, Town" style={styles.input} onChangeText={(text) => setAddress(text)} value={address} />
-      <TextInput placeholder="description (max 128 characters)" style={styles.input} onChangeText={(text) => setDescription(text)} value={description} maxLength={128} />
-      <Button style={styles.button} title="Add the new spot" onPress={() => onSightSeeingAdded()} />
+  <View>
+  <Card title={
+    <View style={styles.cardTitle}>
+        <Text style={styles.cardText}>ADD THE NEW SPOT</Text>
+        <Icon
+          name='location'
+          type='evilicon'
+          color='#517fa4'
+          reverse='true'
+        />
     </View>
+  } containerStyle={styles.card} >
+
+    <View>
+      <Input placeholder="ex. Address, Town" onChangeText={(text) => setAddress(text)} value={address} />
+      <Input placeholder="description (max 128 characters)" onChangeText={(text) => setDescription(text)} value={description} maxLength={128} />
+      <Button raised="true" onPress={() => onSightSeeingAdded()} title="SAVE"></Button>
+     </View>
+   </Card>
+   </View>
   );
 };
 
@@ -36,22 +52,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    marginBottom: 100,
-    backgroundColor: '#ff6347',
-    padding: 7,
-  },
   text: {
     color: 'white',
   },
-  input: {
-    width: '80%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    margin: 10,
-    paddingLeft: 10,
+  card: {
+    padding: '10%',
   },
+  cardContainer: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+  },
+  cardTitle: {
+    flexDirection : 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardText: {
+    fontSize: 26,
+  }
 });
 
 export default MarkerFormContainer;
