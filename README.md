@@ -22,7 +22,10 @@ Installi node modules
 
 Jooksuta projekti
 
-```npm start```
+```
+npm run start
+npm run server
+```
 
 ## Kirjeldus
 Sightmap on kaardipõhine rakendus, kus kasutajatel on võimalik ise luua markereid, mida kaardile paigutatakse. Rakenduse eesmärk on luua kasutajatele platvorm, kus neil on võimalik jagada asukohta kaardil teiste kasutajatega.
