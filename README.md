@@ -3,8 +3,9 @@
 * **Sander Hanni**
 * **Paul Oskar Soe**
 * **Simone Niinemägi**
+* **Kristo Roots**
 * *Petrik Sarri*
-* *Kristo Roots*
+
 
 ## Installatsioon
 
