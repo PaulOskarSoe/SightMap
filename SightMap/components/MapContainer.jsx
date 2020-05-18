@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define */
 /* eslint no-underscore-dangle: 0 */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View, StyleSheet, Dimensions, Text, Button, Alert,
+  View, StyleSheet, Dimensions, Text, Button, Alert, AsyncStorage,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -10,16 +10,26 @@ import PropTypes from 'prop-types';
 import {
   getMarkers, getUserById, getMarkerById, deleteMarker,
 } from '../services';
-import UserContext from '../UserContext';
 
 const MapContainer = () => {
-  const user = useContext(UserContext);
+  const [user, setUser] = useState(null);
   const [markers, updateMarkers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState({});
   const [markerUser, setMarkerUser] = useState({});
 
+  const getUserFromStorage = async () => {
+    try {
+      const userFromStorage = await AsyncStorage.getItem('user');
+      const userObj = JSON.parse(userFromStorage);
+      setUser(userObj);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    getUserFromStorage();
     const interval = setInterval(() => {
       getAllMarkers();
     }, 5000);
@@ -59,7 +69,6 @@ const MapContainer = () => {
       Alert.alert('Failure', 'Failed deleting marker');
     }
   };
-
   return (
     <View style={styles.container}>
       <Modal
@@ -71,8 +80,8 @@ const MapContainer = () => {
             <ModalContent
               text={markerUser.fullName}
               header="OWNER"
-              userId={user._id}
-              markerUserId={markerUser._id}
+              userId={user ? user._id : null}
+              markerUserId={markerUser ? markerUser._id : null}
             />
             <ModalContent
               text={selectedMarker.address}
@@ -82,7 +91,7 @@ const MapContainer = () => {
               text={selectedMarker.description}
               header="DESCRIPTION"
             />
-            {user._id === markerUser._id && <Button title="DELETE" color="#ec2f2f" onPress={deleteUserMarker} />}
+            {user && markerUser && user._id === markerUser._id && <Button title="DELETE" color="#ec2f2f" onPress={deleteUserMarker} />}
           </View>
         </View>
       </Modal>
