@@ -31,16 +31,17 @@ router.get('/:userId', async (req, res) => {
 // insert a new user
 router.post('/', async (req, res) => {
   const { fullName, deviceId } = req.body;
-  const findUser = await User.find({ fullName, deviceId }).count() > 0;
-  const user = await User.find({ fullName, deviceId });
 
   try {
+    const findUser = await User.find({ fullName, deviceId }).count() > 0;
+    const user = await User.find({ fullName, deviceId });
     if (findUser) {
-      res.json(user);
+      res.json(user[0]);
+    } else {
+      const userProps = new User(req.body);
+      const newUser = await userProps.save();
+      res.json(newUser);
     }
-    const userProps = new User(req.body);
-    const newUser = await userProps.save();
-    res.json(newUser);
   } catch (error) {
     res.status(500);
     res.send(error);
