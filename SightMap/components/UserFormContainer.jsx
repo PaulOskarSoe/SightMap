@@ -26,6 +26,7 @@ const UserFormContainer = ({ navigation }) => {
   };
 
   const storeUser = async (user) => {
+    console.debug('userFromDB', user);
     try {
       await AsyncStorage.setItem('user', JSON.stringify(user));
       checkUser();

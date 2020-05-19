@@ -4,13 +4,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import MapContainer from './components/MapContainer';
 import MarkerFormContainer from './components/MarkerFormContainer';
 import UserFormContainer from './components/UserFormContainer';
@@ -20,20 +20,20 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user] = useState(null);
 
-  const getUserFromStorage = async () => {
-    try {
-      const user = await AsyncStorage.getItem('user');
-      const userObj = JSON.parse(user);
-      setUser(userObj);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getUserFromStorage();
-  }, []);
+  // const getUserFromStorage = async () => {
+  //   try {
+  //     const user = await AsyncStorage.getItem('user');
+  //     const userObj = JSON.parse(user);
+  //     setUser(userObj);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getUserFromStorage();
+  // }, []);
 
   return (
     <UserContext.Provider value={user}>
