@@ -24,8 +24,8 @@ Installi node modules
 Jooksuta projekti
 
 ```
-npm run start
 npm run server
+npm run start
 ```
 
 ## Kirjeldus
