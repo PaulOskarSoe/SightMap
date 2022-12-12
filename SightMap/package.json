@@ -17,7 +17,7 @@
     "dotenv": "^8.2.0",
     "expo": "~37.0.3",
     "expo-constants": "~9.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mongoose": "^5.9.10",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.3",
